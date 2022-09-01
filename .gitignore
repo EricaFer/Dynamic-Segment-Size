@@ -3,6 +3,7 @@
 r2a/r2afdash.py
 .DS_Store
 .idea/
+r2a/test.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
