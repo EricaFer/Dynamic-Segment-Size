@@ -11,7 +11,7 @@ class R2ADynamic(IR2A):
 
     def __init__(self, id):
         IR2A.__init__(self, id)
-        self.throughputs = []
+        self.throughputs = [46980]*10
         self.time_request = 0
         self.qi = []
         self.diffAverage = []
@@ -34,7 +34,7 @@ class R2ADynamic(IR2A):
 
         # Throughput = bit length / time to execute (bits per second)
         self.throughput = msg.get_bit_length()/time_response
-        self.throughputs = [self.throughput]*10
+        self.throughputs.append(self.throughput)
 
         self.qi = self.parsed_mpd.get_qi()
 
@@ -46,14 +46,13 @@ class R2ADynamic(IR2A):
 
         # Calculates average throughput from RTT
         # analogous to μ in the article 
-        averageThroughput = mean(self.throughputs)
+        averageThroughput = mean(self.throughputs[-10:])
 
         # Calculating Standard Deviation - stdDev
         stdDev = 0
 
-        # MUDAR coloquei 10 só para testar
         for i in range(1,10+1):
-            stdDev += (abs(self.throughputs[i-1] - averageThroughput))*(i/10)
+            stdDev += (abs(self.throughputs[-i] - averageThroughput))*(i/10)
 
         self.stdlist.append(stdDev)
 
@@ -98,10 +97,8 @@ class R2ADynamic(IR2A):
 
         msg.add_quality_id(self.qi[newQiIndex])
 
-        plt.plot([i for i in range(0,len(self.last_qis))],self.stdlist)
+        plt.plot([i for i in range(0,len(self.last_qis)-1)],self.stdlist)
         plt.savefig('std.png')
-        plt.plot([i for i in range(0,len(self.last_qis))],self.plist)
-        plt.savefig('p.png')
 
         self.send_down(msg)
     
