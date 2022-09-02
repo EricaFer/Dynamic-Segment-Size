@@ -11,12 +11,12 @@ class R2ADynamic(IR2A):
 
     def __init__(self, id):
         IR2A.__init__(self, id)
-        self.throughputs = [46980]*10
+        self.throughputs = []
         self.time_request = 0
         self.qi = []
         self.diffAverage = []
         self.segmentSize = []
-        self.last_qis = [46980]
+        self.last_qis = []
         self.stdlist = []
         self.plist = []
         pass
@@ -37,6 +37,9 @@ class R2ADynamic(IR2A):
         self.throughputs.append(self.throughput)
 
         self.qi = self.parsed_mpd.get_qi()
+
+        self.throughputs = [self.qi[0]] * 10
+        self.last_qis = [self.qi[0]]
 
         self.send_up(msg)
     
@@ -97,7 +100,7 @@ class R2ADynamic(IR2A):
 
         msg.add_quality_id(self.qi[newQiIndex])
 
-        plt.plot([i for i in range(0,len(self.last_qis)-1)],self.stdlist)
+        plt.plot([i for i in range(0,len(self.last_qis))],self.stdlist)
         plt.savefig('std.png')
 
         self.send_down(msg)
