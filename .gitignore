@@ -1,5 +1,4 @@
 /venv/
-*.png
 r2a/r2afdash.py
 .DS_Store
 .idea/
