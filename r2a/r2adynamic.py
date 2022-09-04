@@ -19,6 +19,8 @@ class R2ADynamic(IR2A):
         self.last_qis = []
         self.stdlist = []
         self.plist = []
+        self.M = 10
+
         pass
 
     def handle_xml_request(self, msg):
@@ -38,7 +40,7 @@ class R2ADynamic(IR2A):
 
         self.qi = self.parsed_mpd.get_qi()
 
-        self.throughputs = [self.qi[0]] * 10
+        self.throughputs = [self.qi[0]] * self.M
         self.last_qis = [self.qi[0]]
 
         self.send_up(msg)
@@ -49,13 +51,13 @@ class R2ADynamic(IR2A):
 
         # Calculates average throughput from RTT
         # analogous to μ in the article 
-        averageThroughput = mean(self.throughputs[-10:])
+        averageThroughput = mean(self.throughputs[-self.M:])
 
         # Calculating Standard Deviation - stdDev
         stdDev = 0
 
-        for i in range(1,10+1):
-            stdDev += (abs(self.throughputs[-i] - averageThroughput))*(i/10)
+        for i in range(1,self.M+1):
+            stdDev += (abs(self.throughputs[-i] - averageThroughput))*(i/self.M)
 
         self.stdlist.append(stdDev)
 
@@ -84,7 +86,7 @@ class R2ADynamic(IR2A):
         print(f'Last Qualities = {self.last_qis}',end="\n")
 
         # if first loop, get lowest quality
-        if len(self.throughputs) == 10:
+        if len(self.throughputs) == self.M:
 
             newQiIndex = 0
             # does not append to last_qis because
