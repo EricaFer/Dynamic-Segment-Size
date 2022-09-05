@@ -1,5 +1,5 @@
 """
-@author: Erica Fernandes ( https://github.com/EricaFer )
+@author: Erica Ferreira ( https://github.com/EricaFer )
 
 @description: Dynamic Segment-Size Implementation on pyDash
 
@@ -8,14 +8,12 @@ paper written by Luca Bedogni, Marco Di Felice and Luciano Bononi, about a new s
 The project consists on analysing the bandwidth oscilations, as well as the previous selections made in the segment size of the video, and then, use
 estimations to calculate what is the best next segment to choose, based on the network average capacity.
 
-This work was mostly done by Erica Fernandes, but the other group members put effort on writing the report of the implemetation, as well as showing the comparisons
+This work was mostly done by Erica Ferreira, but the other group members put effort on writing the report of the implemetation, as well as showing the comparisons
 with other approaches.
 
 September, 2022
 """
 
-from ast import parse
-from math import factorial
 from r2a.ir2a import IR2A
 from statistics import mean
 from player.parser import *
