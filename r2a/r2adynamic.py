@@ -54,7 +54,7 @@ class R2ADynamic(IR2A):
 
         self.qi = self.parsed_mpd.get_qi()
 
-        self.throughputs = [self.qi[0]] * self.M
+        self.throughputs = [self.throughput] * self.M
         self.last_qis = [self.qi[0]]
 
         self.send_up(msg)
@@ -67,11 +67,14 @@ class R2ADynamic(IR2A):
         # analogous to μ in the article 
         averageThroughput = mean(self.throughputs[-self.M:])
 
+        # Slice of the list `self.throughputs` with size M (M last iterations)
+        subThroughputs = self.throughputs[-self.M:]
+
         # Calculating Standard Deviation - stdDev
         stdDev = 0
 
         for i in range(1,self.M+1):
-            stdDev += (abs(self.throughputs[-i] - averageThroughput))*(i/self.M)
+            stdDev += (abs(subThroughputs[i-1] - averageThroughput))*(i/self.M)
 
         self.stdlist.append(stdDev)
 
