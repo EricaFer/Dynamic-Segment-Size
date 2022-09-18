@@ -24,5 +24,6 @@
         "**/*_adt.pvs": false,
         "**/*.log": true,
         "**/.vscode": true
-    }
+    },
+    "workbench.activityBar.iconClickBehavior": "toggle"
 }
